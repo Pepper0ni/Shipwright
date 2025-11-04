@@ -263,24 +263,35 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM, logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_WATER_RANG_FALLING_PLATFORM_GS) && logic->IsChild && logic->CanUse(RG_BOOMERANG)) || (ctx->GetTrickOption(RT_WATER_HOOKSHOT_FALLING_PLATFORM_GS) && logic->IsAdult && logic->CanUse(RG_HOOKSHOT))),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_LOBBY,               []{return logic->CanUse(RG_HOOKSHOT) && logic->SmallKeys(SCENE_WATER_TEMPLE, 4);}),
-        Entrance(RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM, []{return logic->CanUse(RG_HOOKSHOT) && logic->SmallKeys(SCENE_WATER_TEMPLE, 5);}),
+        Entrance(RR_WATER_TEMPLE_LOBBY,                     []{return logic->SmallKeys(SCENE_WATER_TEMPLE, 4);}),
+        Entrance(RR_WATER_TEMPLE_FALLING_PLATFORM_ROOM_END, []{return logic->CanUse(RG_HOOKSHOT);}),
     });
 
-    areaTable[RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM] = Region("Water Temple Dragon Pillars Room", SCENE_WATER_TEMPLE, {}, {
-        //Locations
-        LOCATION(RC_WATER_TEMPLE_LIKE_LIKE_POT_1, logic->CanUse(RG_HOOKSHOT)),
-        LOCATION(RC_WATER_TEMPLE_LIKE_LIKE_POT_2, logic->CanUse(RG_HOOKSHOT)),
-    }, {
+    areaTable[RR_WATER_TEMPLE_FALLING_PLATFORM_ROOM_END] = Region("Water Temple Falling Platform Room End", SCENE_WATER_TEMPLE, {}, {}, {
+        Entrance(RR_WATER_TEMPLE_FALLING_PLATFORM_ROOM, []{return logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM,   []{return logic->SmallKeys(SCENE_WATER_TEMPLE, 5);}),
+    });
+
+    areaTable[RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM] = Region("Water Temple Dragon Pillars Room", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_FALLING_PLATFORM_ROOM, []{return logic->CanUseProjectile();}),
-        Entrance(RR_WATER_TEMPLE_DARK_LINK_ROOM,        []{return logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_WATER_TEMPLE_FALLING_PLATFORM_ROOM,     []{return logic->SmallKeys(SCENE_WATER_TEMPLE, 5);}),
+        Entrance(RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM_UPPER, []{return logic->CanUse(RG_HOOKSHOT);}),
+    });
+
+    //specifically the area past the spikes
+    areaTable[RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM_UPPER] = Region("Water Temple Dragon Pillars Room Upper", SCENE_WATER_TEMPLE, {}, {
+        //Locations
+        LOCATION(RC_WATER_TEMPLE_LIKE_LIKE_POT_1, logic->CanBreakPots()),
+        LOCATION(RC_WATER_TEMPLE_LIKE_LIKE_POT_2, logic->CanBreakPots()),
+    }, {
+        Entrance(RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM, []{return (logic->IsAdult || logic->TakeDamage() || logic->CanUse(RG_GORON_TUNIC)) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS));}),
+        Entrance(RR_WATER_TEMPLE_DARK_LINK_ROOM,      []{return true;}),
     });
 
     areaTable[RR_WATER_TEMPLE_DARK_LINK_ROOM] = Region("Water Temple Dark Link Room", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM, []{return logic->CanKillEnemy(RE_DARK_LINK);}),
-        Entrance(RR_WATER_TEMPLE_LONGSHOT_ROOM,       []{return logic->CanKillEnemy(RE_DARK_LINK);}),
+        Entrance(RR_WATER_TEMPLE_DRAGON_PILLARS_ROOM_UPPER, []{return logic->CanKillEnemy(RE_DARK_LINK);}),
+        Entrance(RR_WATER_TEMPLE_LONGSHOT_ROOM,             []{return logic->CanKillEnemy(RE_DARK_LINK);}),
     });
 
     areaTable[RR_WATER_TEMPLE_LONGSHOT_ROOM] = Region("Water Temple Longshot Room", SCENE_WATER_TEMPLE, {}, {
@@ -305,7 +316,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_DRAGON_CHEST,  logic->IsAdult && logic->CanUse(RG_FAIRY_BOW) && ((ctx->GetTrickOption(RT_WATER_ADULT_DRAGON) && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))) || ctx->GetTrickOption(RT_WATER_DRAGON_JUMP_DIVE))),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_DRAGON_ROOM, []{return (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW)) && (logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT));}),
+        Entrance(RR_WATER_TEMPLE_DRAGON_ROOM, []{return logic->CanHitEyeTargets() && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW)) && (logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT));}),
     });
 
     areaTable[RR_WATER_TEMPLE_PRE_BOSS_ROOM] = Region("Water Temple Pre Boss Room", SCENE_WATER_TEMPLE, {
@@ -667,8 +678,8 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_DARK_LINK_RIGHT_SUN_FAIRY,  logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_MQ_STALFOS_PIT_LOWER, []{return logic->IsAdult || logic->TakeDamage();}),
-        Entrance(RR_WATER_TEMPLE_MQ_STALFOS_PIT_POTS,  []{return logic->IsAdult || logic->TakeDamage();}),
+        Entrance(RR_WATER_TEMPLE_MQ_STALFOS_PIT_LOWER, []{return logic->IsAdult || logic->TakeDamage() || logic->CanUse(RG_GORON_TUNIC);}),
+        Entrance(RR_WATER_TEMPLE_MQ_STALFOS_PIT_POTS,  []{return logic->IsAdult || logic->TakeDamage() || logic->CanUse(RG_GORON_TUNIC);}),
     });
 
     areaTable[RR_WATER_TEMPLE_MQ_DARK_LINK_ROOM] = Region("Water Temple MQ Dark Link Room", SCENE_WATER_TEMPLE, {}, {}, {
