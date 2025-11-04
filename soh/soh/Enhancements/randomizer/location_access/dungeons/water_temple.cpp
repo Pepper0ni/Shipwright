@@ -79,18 +79,30 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_NORTH_LOWER] = Region("Water Temple North Lower", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_LOBBY,          []{return true;}),
-        Entrance(RR_WATER_TEMPLE_BOULDERS_LOWER, []{return (logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_WATER_BK_REGION) && logic->CanUse(RG_HOVER_BOOTS))) && logic->SmallKeys(SCENE_WATER_TEMPLE, 4);}),
+        Entrance(RR_WATER_TEMPLE_LOBBY,                []{return true;}),
+        Entrance(RR_WATER_TEMPLE_BOULDERS_LOWER_SOUTH, []{return (logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_WATER_BK_REGION) && logic->CanUse(RG_HOVER_BOOTS))) && logic->SmallKeys(SCENE_WATER_TEMPLE, 4);}),
     });
 
-    areaTable[RR_WATER_TEMPLE_BOULDERS_LOWER] = Region("Water Temple Boulders Lower", SCENE_WATER_TEMPLE, {}, {
+    areaTable[RR_WATER_TEMPLE_BOULDERS_LOWER_SOUTH] = Region("Water Temple Boulders Lower South", SCENE_WATER_TEMPLE, {}, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST, logic->CanUse(RG_LONGSHOT)),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_NORTH_LOWER,    []{return logic->SmallKeys(SCENE_WATER_TEMPLE, 4);}),
-        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM,     []{return true;}),
-        Entrance(RR_WATER_TEMPLE_BOULDERS_UPPER, []{return (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP))) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_IRON_BOOTS));}),
+        Entrance(RR_WATER_TEMPLE_NORTH_LOWER,          []{return logic->SmallKeys(SCENE_WATER_TEMPLE, 4);}),
+        Entrance(RR_WATER_TEMPLE_BOULDERS_LOWER_NORTH, []{return logic->HasItem(RG_BRONZE_SCALE) || (ctx->GetTrickOption(RT_WATER_MQ_LOCKED_GS) && (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)));}),
+        Entrance(RR_WATER_TEMPLE_BOULDERS_UPPER,       []{return (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP))) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_IRON_BOOTS));}),
+    });
+
+    areaTable[RR_WATER_TEMPLE_BOULDERS_LOWER_NORTH] = Region("Water Temple Boulders Lower North", SCENE_WATER_TEMPLE, {}, {}, {
+        //Exits
+        Entrance(RR_WATER_TEMPLE_BOULDERS_LOWER_SOUTH,   []{return logic->HasItem(RG_BRONZE_SCALE);}),
+        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM_TO_BOULDERS, []{return true;}),
+    });
+
+    areaTable[RR_WATER_TEMPLE_BLOCK_ROOM_TO_BOULDERS] = Region("Water Temple Block Room to Boulders", SCENE_WATER_TEMPLE, {}, {}, {
+        //Exits
+        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM,         []{return true;}),
+        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM_TO_JETS, []{return logic->CanUse(RG_HOVER_BOOTS);}),
     });
 
     areaTable[RR_WATER_TEMPLE_BLOCK_ROOM] = Region("Water Temple Block Room", SCENE_WATER_TEMPLE, {}, {
@@ -99,24 +111,44 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_BASEMENT_BLOCK_PUZZLE_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_BOULDERS_LOWER, []{return (logic->HasItem(RG_GORONS_BRACELET) && logic->HasExplosives()) || logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_WATER_TEMPLE_JETS_ROOM,      []{return (logic->HasItem(RG_GORONS_BRACELET) && logic->HasExplosives()) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_HOVER_BOOTS));}),
+        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM_TO_BOULDERS, []{return logic->HasItem(RG_GORONS_BRACELET) && logic->HasExplosives() && logic->HasItem(RG_BRONZE_SCALE);}),
+        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM_TO_JETS,     []{return logic->HasItem(RG_GORONS_BRACELET) && logic->HasExplosives() && logic->HasItem(RG_BRONZE_SCALE);}),
+    });
+
+    areaTable[RR_WATER_TEMPLE_BLOCK_ROOM_TO_JETS] = Region("Water Temple Block Room to Boulders", SCENE_WATER_TEMPLE, {}, {}, {
+        //Exits
+        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM,             []{return true;}),
+        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM_TO_BOULDERS, []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}),
     });
 
     areaTable[RR_WATER_TEMPLE_JETS_ROOM] = Region("Water Temple Jets Room", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM,     []{return logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_WATER_TEMPLE_BOULDERS_UPPER, []{return true;}),
+        Entrance(RR_WATER_TEMPLE_BLOCK_ROOM_TO_JETS,    []{return logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_WATER_TEMPLE_BOULDERS_UPPER_ALCOVE, []{return true;}),
     });
 
     areaTable[RR_WATER_TEMPLE_BOULDERS_UPPER] = Region("Water Temple Boulders Upper", SCENE_WATER_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST, (logic->IsAdult && logic->HookshotOrBoomerang()) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
+        LOCATION(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST, (logic->IsAdult && logic->HookshotOrBoomerang()) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))), // can also get token with hover backflip
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_BOULDERS_LOWER, []{return true;}),
-        Entrance(RR_WATER_TEMPLE_JETS_ROOM,      []{return logic->IsAdult;}),
-        Entrance(RR_WATER_TEMPLE_BOSS_KEY_ROOM,  []{return (logic->CanUse(RG_IRON_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_WATER_BK_JUMP_DIVE))) && logic->SmallKeys(SCENE_WATER_TEMPLE, 5);}),
+        Entrance(RR_WATER_TEMPLE_BOULDERS_LOWER_SOUTH,   []{return logic->HasItem(RG_BRONZE_SCALE) || (logic->IsAdult && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)));}),
+        Entrance(RR_WATER_TEMPLE_BOULDERS_UPPER_ALCOVE,  []{return logic->IsAdult;}),
+        Entrance(RR_WATER_TEMPLE_OUTSIDE_BOSS_KEY_ROOM,  []{return (logic->CanUse(RG_IRON_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_WATER_BK_JUMP_DIVE))) && logic->HasItem(RG_BRONZE_SCALE);}),
+    });
+
+    areaTable[RR_WATER_TEMPLE_BOULDERS_UPPER_ALCOVE] = Region("Water Temple Boulders Upper Alcove", SCENE_WATER_TEMPLE, {}, {}, {
+        //Exits
+        Entrance(RR_WATER_TEMPLE_JETS_ROOM, []{return true;}),
+    });
+
+    areaTable[RR_WATER_TEMPLE_OUTSIDE_BOSS_KEY_ROOM] = Region("Water Temple Outside Boss Key Room", SCENE_WATER_TEMPLE, {}, {
+        //Locations
+        LOCATION(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST, logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)),
+    }, {
+        //Exits
+        Entrance(RR_WATER_TEMPLE_BOULDERS_UPPER, []{return logic->HasItem(RG_BRONZE_SCALE);}),
+        Entrance(RR_WATER_TEMPLE_BOSS_KEY_ROOM,  []{return logic->SmallKeys(SCENE_WATER_TEMPLE, 5);}),
     });
 
     areaTable[RR_WATER_TEMPLE_BOSS_KEY_ROOM] = Region("Water Temple Boss Key Room", SCENE_WATER_TEMPLE, {
@@ -129,7 +161,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_BOSS_KEY_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_BOULDERS_UPPER, []{return (logic->CanUse(RG_IRON_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_WATER_BK_JUMP_DIVE)) || logic->IsChild || logic->HasItem(RG_SILVER_SCALE)) && logic->SmallKeys(SCENE_WATER_TEMPLE, 5);}),
+        Entrance(RR_WATER_TEMPLE_OUTSIDE_BOSS_KEY_ROOM, []{return logic->SmallKeys(SCENE_WATER_TEMPLE, 5);}),
     });
 
     areaTable[RR_WATER_TEMPLE_SOUTH_LOWER] = Region("Water Temple South Lower", SCENE_WATER_TEMPLE, {}, {
@@ -146,8 +178,14 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_WEST_LOWER] = Region("Water Temple West Lower", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_LOBBY,       []{return logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS) && logic->HasItem(RG_GORONS_BRACELET);}),
-        Entrance(RR_WATER_TEMPLE_DRAGON_ROOM, []{return logic->CanJumpslashExceptHammer() || logic->CanUseProjectile();}),
+        Entrance(RR_WATER_TEMPLE_LOBBY,               []{return logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS) && logic->HasItem(RG_GORONS_BRACELET);}),
+        Entrance(RR_WATER_TEMPLE_OUTSIDE_DRAGON_ROOM, []{return logic->CanHitSwitch();}),
+    });
+
+    areaTable[RR_WATER_TEMPLE_OUTSIDE_DRAGON_ROOM] = Region("Water Temple Outside Dragon Room", SCENE_WATER_TEMPLE, {}, {}, {
+        //Exits
+        Entrance(RR_WATER_TEMPLE_WEST_LOWER,  []{return logic->CanHitSwitch(ED_BOOMERANG);}),
+        Entrance(RR_WATER_TEMPLE_DRAGON_ROOM, []{return true;}),
     });
 
     areaTable[RR_WATER_TEMPLE_DRAGON_ROOM] = Region("Water Temple Dragon Room", SCENE_WATER_TEMPLE, {}, {
@@ -155,7 +193,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_DRAGON_CHEST, (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS)) || (((logic->IsAdult && ctx->GetTrickOption(RT_WATER_ADULT_DRAGON) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_BOMBCHU_5))) || (logic->IsChild && ctx->GetTrickOption(RT_WATER_CHILD_DRAGON) && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_BOMBCHU_5)))) && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS)))),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_WEST_LOWER, []{return true;}),
+        Entrance(RR_WATER_TEMPLE_OUTSIDE_DRAGON_ROOM, []{return true;}),
     });
 
     areaTable[RR_WATER_TEMPLE_CENTRAL_PILLAR_LOWER] = Region("Water Temple Central Pillar Lower", SCENE_WATER_TEMPLE, {}, {}, {
@@ -386,7 +424,7 @@ void RegionTable_Init_WaterTemple() {
         //Events
         //if we can't reach these, we can't move the water at all, so no need to specify level or account for WL_LOW access here
         //review is some way to play ocarina underwater exists
-        EventAccess(LOGIC_WATER_COULD_LOW,       []{return true;}),
+        EventAccess(LOGIC_WATER_COULD_LOW,     []{return true;}),
         EventAccess(LOGIC_WATER_LOW_FROM_HIGH, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
         //Reserved for glitches/tricks that could do this
         //EventAccess(LOGIC_WATER_LOW_FROM_MIDDLE,  []{return false;}),
