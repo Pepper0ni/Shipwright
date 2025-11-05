@@ -336,7 +336,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_1_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_WATER_TEMPLE_LOBBY,              []{return true;}),
+        Entrance(RR_WATER_TEMPLE_LOBBY,              []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS));}),
         Entrance(RR_WATER_TEMPLE_PRE_BOSS_ROOM_RAMP, []{return true;}),
     });
 
@@ -423,7 +423,7 @@ void RegionTable_Init_WaterTemple() {
         //Exits
         //what we need if WL_LOW, we can't guarantee repeated access otherwise.
         Entrance(RR_WATER_TEMPLE_MQ_MAIN,           []{return logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage();}),
-        Entrance(RR_WATER_TEMPLE_MQ_3F_CENTRAL,     []{return logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_WATER_TEMPLE_MQ_3F_CENTRAL,     []{return logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS));}),
         Entrance(RR_WATER_TEMPLE_MQ_BOSS_DOOR_RAMP, []{return true;}),
     });
 
