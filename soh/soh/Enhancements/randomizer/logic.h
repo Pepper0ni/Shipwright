@@ -57,6 +57,8 @@ class Logic {
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
+    bool Water3FCentralToHighEmblem();
+    bool WaterLevel(RandoWaterLevel level);
     bool MQWaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();
     uint8_t OcarinaButtons();

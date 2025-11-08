@@ -994,6 +994,42 @@ bool Logic::CanDetonateUprightBombFlower() {
             (EffectiveHealth() != 1 || CanUse(RG_NAYRUS_LOVE)));
 }
 
+bool Logic::Water3FCentralToHighEmblem(){
+    return (IsAdult && (CanUse(RG_HOVER_BOOTS) || 
+            (ctx->GetTrickOption(RT_DAMAGE_BOOST) && CanUse(RG_BOMB_BAG) && TakeDamage()))) ||
+           (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && CanGroundJump() && CanUse(RG_HOVER_BOOTS)) ||
+           (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT));
+}
+
+/* Water level has 6 events that govern it's logic. 
+ * 
+*/
+bool Logic::WaterLevel(RandoWaterLevel level) {
+        switch (level) {
+        case WL_LOW:
+            return Get(LOGIC_WATER_LOW) ||
+                   (Get(LOGIC_WATER_COULD_LOW) && Get(LOGIC_WATER_COULD_MIDDLE) && Get(LOGIC_WATER_COULD_HIGH) && CanUse(RG_ZELDAS_LULLABY));
+        case WL_LOW_OR_MID:
+            return Get(LOGIC_WATER_LOW) || Get(LOGIC_WATER_MIDDLE) ||
+                   //The water level is either at high, in which case COULD_LOW can set it to low, low, or mid, so we only have to check COULD_LOW and ZL
+                   (Get(LOGIC_WATER_COULD_LOW) && CanUse(RG_ZELDAS_LULLABY));
+        case WL_MID:
+            return Get(LOGIC_WATER_MIDDLE) ||
+                   (Get(LOGIC_WATER_COULD_LOW) && Get(LOGIC_WATER_COULD_MIDDLE) && Get(LOGIC_WATER_COULD_HIGH) && CanUse(RG_ZELDAS_LULLABY));
+        case WL_HIGH:
+            return Get(LOGIC_WATER_HIGH) ||
+                   (Get(LOGIC_WATER_COULD_LOW) && Get(LOGIC_WATER_COULD_MIDDLE) && Get(LOGIC_WATER_COULD_HIGH));
+        case WL_HIGH_OR_MID:
+            return Get(LOGIC_WATER_MIDDLE) || Get(LOGIC_WATER_HIGH) ||
+                   //The water level is either at low, in which case COULD_MIDDLE can set it to mid, mid, or high, so we only have to check COULD_MIDDLE
+                   //if we don't have ZL, then we are at high, so we can skip that too
+                   (Get(LOGIC_WATER_COULD_MIDDLE));
+    }
+    SPDLOG_ERROR("WaterLevel reached `return false;`. Missing case for a Water Level");
+    assert(false);
+    return false;
+}
+
 bool Logic::MQWaterLevel(RandoWaterLevel level) {
     // For ease of reading, I will call the triforce emblem that sets the water to WL_LOW the "Low Emblem", the one that
     // sets it to WL_MID the "Mid Emblem", and the one that sets it to WL_HIGH the "High Emblem"
@@ -1004,17 +1040,17 @@ bool Logic::MQWaterLevel(RandoWaterLevel level) {
         // WL_LOW in logic. Alternativly a way to reach WL_LOW from WL_MID could exist, but all glitchless methods need
         // you to do a Low-locked action
         case WL_LOW:
-            return (Get(LOGIC_WATER_HIGH) && Get(LOGIC_WATER_LOW_FROM_HIGH)) ||
-                   (Get(LOGIC_WATER_LOW_FROM_MID) && Get(LOGIC_WATER_LOW_FROM_HIGH));
+            return (Get(LOGIC_WATER_HIGH) && Get(LOGIC_WATER_LOW)) ||
+                   (Get(LOGIC_WATER_LOW) && Get(LOGIC_WATER_LOW));
         case WL_LOW_OR_MID:
-            return (Get(LOGIC_WATER_HIGH) && Get(LOGIC_WATER_LOW_FROM_HIGH)) ||
-                   (Get(LOGIC_WATER_LOW_FROM_HIGH) && Get(LOGIC_WATER_MIDDLE)) ||
-                   (Get(LOGIC_WATER_LOW_FROM_MID) && Get(LOGIC_WATER_LOW_FROM_HIGH));
+            return (Get(LOGIC_WATER_HIGH) && Get(LOGIC_WATER_LOW)) ||
+                   (Get(LOGIC_WATER_LOW) && Get(LOGIC_WATER_MIDDLE)) ||
+                   (Get(LOGIC_WATER_LOW) && Get(LOGIC_WATER_LOW));
         // If we can set it to High out of logic we can just repeat what we did to lower the water in the first place as
         // High is the default. Because of this you only need to be able to use the Low and Mid Emblems, WL_LOW could be
         // skipped if it was ever possible to play ZL underwater.
         case WL_MID:
-            return Get(LOGIC_WATER_LOW_FROM_HIGH) && Get(LOGIC_WATER_MIDDLE);
+            return Get(LOGIC_WATER_LOW) && Get(LOGIC_WATER_MIDDLE);
         // Despite being the initial state of water temple, WL_HIGH has the extra requirement of making sure that, if we
         // were to lower the water out of logic, we could put it back to WL_HIGH However because it is the default
         // state, we do not need to check if we can actually change the water level, only to make sure we can return to
@@ -1024,9 +1060,9 @@ bool Logic::MQWaterLevel(RandoWaterLevel level) {
         // but we assume the water is WL_MID (as if we can set it to WL_LOW, we can set it to WL_MID, as Mid Emblem has
         // no requirements) The latter check can be assumed for now but will want a revisit once OI tricks are added.
         case WL_HIGH:
-            return Get(LOGIC_WATER_REACHED_HIGH_EMBLEM);
+            return Get(LOGIC_WATER_SCARECROW);
         case WL_HIGH_OR_MID:
-            return Get(LOGIC_WATER_REACHED_HIGH_EMBLEM) || (Get(LOGIC_WATER_LOW_FROM_HIGH) && Get(LOGIC_WATER_MIDDLE));
+            return Get(LOGIC_WATER_SCARECROW) || (Get(LOGIC_WATER_LOW) && Get(LOGIC_WATER_MIDDLE));
     }
     SPDLOG_ERROR("MQWaterLevel reached `return false;`. Missing case for a Water Level");
     assert(false);

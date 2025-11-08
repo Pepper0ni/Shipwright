@@ -890,7 +890,7 @@ void Settings::CreateOptions() {
               "raise the water up to the middle level.");
     OPT_TRICK(RT_WATER_CRACKED_WALL, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
               "Water Temple Cracked Wall with No Additional Items",
-              "A precise jump slash (among other methods) will get you to the cracked wall without needing the Hover "
+              "A precise side hop (among other methods) will get you to the cracked wall without needing the Hover "
               "Boots or to raise the water to the middle level. This trick supersedes \"Water Temple Cracked Wall with "
               "Hover Boots\".");
     OPT_TRICK(RT_WATER_BK_REGION, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
