@@ -235,7 +235,8 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_BLOCK_ROOM] = Region("Water Temple Block Room", SCENE_WATER_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_BASEMENT_BLOCK_PUZZLE_POT_1, logic->CanBreakPots()),
+        //the water level rising is pernament, so we need to be able to get the pots when the water is high for it to be logical
+        LOCATION(RC_WATER_TEMPLE_BASEMENT_BLOCK_PUZZLE_POT_1, logic->CanUse(RG_IRON_BOOTS)),
         LOCATION(RC_WATER_TEMPLE_BASEMENT_BLOCK_PUZZLE_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
@@ -515,10 +516,11 @@ void RegionTable_Init_WaterTemple() {
         //Bronze scale does this alone thanks to the nearby pond cancelling fall damage
         //otherwise we need irons for high level and taking damage for low
         Entrance(RR_WATER_TEMPLE_MAIN,               []{return logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->TakeDamage());}),
-        Entrance(RR_WATER_TEMPLE_3F_CENTRAL_A,       []{return logic->HasItem(RG_LONGSHOT);}),
-        Entrance(RR_WATER_TEMPLE_3F_CENTRAL_H,       []{return logic->HasItem(RG_LONGSHOT) && logic->WaterLevel(WL_HIGH);}),
-        Entrance(RR_WATER_TEMPLE_3F_CENTRAL_LM,      []{return logic->HasItem(RG_LONGSHOT) && logic->WaterLevel(WL_LOW_OR_MID);}),
-        //You can perform RT_WATER_IRONS_CENTRAL_GS from here without hookshot using fire arrows, but it requires a trick to cross
+        Entrance(RR_WATER_TEMPLE_3F_CENTRAL_A,       []{return logic->WaterRisingTargetTo3FCentral();}),
+        Entrance(RR_WATER_TEMPLE_3F_CENTRAL_H,       []{return logic->WaterRisingTargetTo3FCentral() && logic->WaterLevel(WL_HIGH);}),
+        Entrance(RR_WATER_TEMPLE_3F_CENTRAL_LM,      []{return logic->WaterRisingTargetTo3FCentral() && logic->WaterLevel(WL_LOW_OR_MID);}),
+        //Assumes RR_WATER_TEMPLE_3F_CENTRAL, RR_WATER_TEMPLE_HIGH_EMBLEM and RR_WATER_TEMPLE_2F_CENTRAL access
+        Entrance(RR_WATER_TEMPLE_PILLAR_H,           []{return ctx->GetTrickOption(RT_WATER_IRONS_CENTRAL_GS) && logic->CanUse(RG_FIRE_ARROWS) && logic->WaterRisingTargetTo3FCentral();}),
         Entrance(RR_WATER_TEMPLE_PRE_BOSS_ROOM_RAMP, []{return true;}),
     });
 

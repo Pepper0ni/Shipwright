@@ -58,6 +58,7 @@ class Logic {
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
     bool Water3FCentralToHighEmblem();
+    bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
     bool MQWaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();

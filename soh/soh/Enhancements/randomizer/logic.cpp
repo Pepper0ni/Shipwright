@@ -1001,9 +1001,21 @@ bool Logic::Water3FCentralToHighEmblem(){
            (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT));
 }
 
+bool Logic::WaterRisingTargetTo3FCentral(){
+    return CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && HasExplosives() && CanUse(RG_HOVER_BOOTS));
+}
+
 /* Water level has 6 events that govern it's logic. 
+ * LOGIC_WATER_LOW, LOGIC_WATER_MIDDLE and LOGIC_WATER_HIGH say that the player for sure can set the water to this level
+ * the COULD varients of these 3 instead check for if using those emblems would be possible if the player had a specific water level and ZL
+ * - LOGIC_WATER_COULD_LOW checks if the water level could be set low if it was set to high
+ * - LOGIC_WATER_COULD_MIDDLE checks if the water level could be set mid if it was set to low
+ * - LOGIC_WATER_COULD_HIGH checks if the water level could be set high if it was set to mid
  * 
-*/
+ * These exist because, as we are always a single water level, if we have them all we know we can move to the next and so on
+ * We can also use them determine that WL_HIGH is possible without ZL because, as the default, if we don't have ZL we know we are at high
+ * and if we do, even out of logic, we can fix it.
+ */
 bool Logic::WaterLevel(RandoWaterLevel level) {
         switch (level) {
         case WL_LOW:
