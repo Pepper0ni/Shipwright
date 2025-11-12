@@ -781,8 +781,15 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_GANON:
             return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
         case RE_DARK_LINK:
-            // RANDOTODO Dark link is buggy right now, retest when he is not
-            return CanJumpslash() || CanUse(RG_FAIRY_BOW);
+            //RANDOTODO make a function to track our ammo vs his HP when ammo acapacity is taken into account in logic
+            // all swords can at least trade blows with dark link, and even with 1 damage a slash it works out
+            return CanUseSword() || 
+            //Boomerang is a relaible, infinite ammo stun, so it enables any way to get enough damage with the ammo we have
+            //Max HP dark link has 40 HP, bows and bombs do 2 so 2 ammo, stick jumpslash does 4 so 10 sticks
+            (CanUse(RG_BOOMERANG) && (CanUse(RG_FAIRY_BOW) || CanUse(RG_STICKS) || CanUse(RG_MEGATON_HAMMER) || HasExplosives())) ||
+            //By using deku nuts against the wall, you can stun him roughly half the time, which makes 4 damage attacks reliable on base nuts
+            (CanUse(RG_NUTS) && (CanUse(RG_STICKS) || CanUse(RG_MEGATON_HAMMER)));
+            //Dins does 2 damage, but is reliable, so would need 20 casts for max HP dark link. normal magic gives 4 casts, double 8, and then potions can add more
         case RE_ANUBIS:
             // there's a restoration that allows beating them with mirror shield + some way to trigger their attack
             return HasFireSource();
@@ -1005,35 +1012,48 @@ bool Logic::WaterRisingTargetTo3FCentral(){
     return CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && HasExplosives() && CanUse(RG_HOVER_BOOTS));
 }
 
-/* Water level has 6 events that govern it's logic. 
- * LOGIC_WATER_LOW, LOGIC_WATER_MIDDLE and LOGIC_WATER_HIGH say that the player for sure can set the water to this level
- * the COULD varients of these 3 instead check for if using those emblems would be possible if the player had a specific water level and ZL
- * - LOGIC_WATER_COULD_LOW checks if the water level could be set low if it was set to high
+/* Water level has 7 events that govern it's logic. 
+ * LOGIC_WATER_LOW, LOGIC_WATER_MIDDLE say that the player for sure can set the water to this level
+ * the COULD varients of these 2, as well as LOGIC_WATER_HIGH instead check for if using those emblems would be possible if the player had a specific water level and ZL
+ * - LOGIC_WATER_COULD_LOW checks if the water level could be set low with water agnostic access
  * - LOGIC_WATER_COULD_MIDDLE checks if the water level could be set mid if it was set to low
- * - LOGIC_WATER_COULD_HIGH checks if the water level could be set high if it was set to mid
+ * - LOGIC_WATER_HIGH checks if the water level could be set high with water agnostic access, 
+ *   HIGH is the default, so we don't need to check if we can really set it, only that we could reset it if it was changed out of logic
  * 
- * These exist because, as we are always a single water level, if we have them all we know we can move to the next and so on
- * We can also use them determine that WL_HIGH is possible without ZL because, as the default, if we don't have ZL we know we are at high
- * and if we do, even out of logic, we can fix it.
+ * Extending from these 3, LOGIC_WATER_COULD_LOW_FROM_HIGH and LOGIC_WATER_COULD_HIGH_FROM_MID tell us if we can move from 1 level to the next,
+ * without us first having to confirm we can always do the preceeding level first.
+ * These allow us for check for conditions where we can complete a water level loop and reach any level from any level before we know for sure we have real access.
+ * MIDDLE_EMBLEM always requires low water, so FROM_LOW is implied in LOGIC_WATER_COULD_MIDDLE.
+ * 
+ * These exist because we can deduce we have access from knowing we always have access to a water level, and can then change it as needed
  */
 bool Logic::WaterLevel(RandoWaterLevel level) {
         switch (level) {
         case WL_LOW:
             return Get(LOGIC_WATER_LOW) ||
-                   (Get(LOGIC_WATER_COULD_LOW) && Get(LOGIC_WATER_COULD_MIDDLE) && Get(LOGIC_WATER_COULD_HIGH) && CanUse(RG_ZELDAS_LULLABY));
+                   // if we could get LOW from HIGH and HIGH from MID, then we can move to LOW from any water level
+                   (Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) && (Get(LOGIC_WATER_COULD_HIGH_FROM_MID) || Get(LOGIC_WATER_HIGH)) && CanUse(RG_ZELDAS_LULLABY));
         case WL_LOW_OR_MID:
             return Get(LOGIC_WATER_LOW) || Get(LOGIC_WATER_MIDDLE) ||
-                   //The water level is either at high, in which case COULD_LOW can set it to low, low, or mid, so we only have to check COULD_LOW and ZL
-                   (Get(LOGIC_WATER_COULD_LOW) && CanUse(RG_ZELDAS_LULLABY));
+                   //The water level is either at HIGH, in which case we can set it to LOW, LOW, or MID, so we only have to check COULD_LOW and ZL
+                   (Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) && CanUse(RG_ZELDAS_LULLABY));
         case WL_MID:
             return Get(LOGIC_WATER_MIDDLE) ||
-                   (Get(LOGIC_WATER_COULD_LOW) && Get(LOGIC_WATER_COULD_MIDDLE) && Get(LOGIC_WATER_COULD_HIGH) && CanUse(RG_ZELDAS_LULLABY));
+                   // LOGIC_WATER_COULD_MIDDLE is LOGIC_WATER_COULD_MIDDLE_FROM_LOW in practice, due to WL_LOW being a hard requirement for WL_MID
+                   (Get(LOGIC_WATER_LOW) && Get(LOGIC_WATER_COULD_MIDDLE)) ||
+                   //If we have COULD_MIDDLE, we know we could move to LOW from HIGH, 
+                   //we're either already MID, on LOW can set MID, or on HIGH so you can set LOW and thus MID.
+                   (Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) && Get(LOGIC_WATER_COULD_MIDDLE) && CanUse(RG_ZELDAS_LULLABY));
         case WL_HIGH:
+                   //If we don't have ZL, we're stuck on high anyway, so we only need to check for if we can reset it to high
             return Get(LOGIC_WATER_HIGH) ||
-                   (Get(LOGIC_WATER_COULD_LOW) && Get(LOGIC_WATER_COULD_MIDDLE) && Get(LOGIC_WATER_COULD_HIGH));
+                   //If water is MID and we COULD_HIGH_FROM_MID, then if water is MID we can set it HIGH
+                   //so we only need to check if we could make it MID from LOW
+                   (Get(LOGIC_WATER_COULD_HIGH_FROM_MID) && Get(LOGIC_WATER_COULD_MIDDLE));
         case WL_HIGH_OR_MID:
+                   //If we don't have ZL, we're stuck on high anyway, so we only need to check for if we can reset it to high
             return Get(LOGIC_WATER_MIDDLE) || Get(LOGIC_WATER_HIGH) ||
-                   //The water level is either at low, in which case COULD_MIDDLE can set it to mid, mid, or high, so we only have to check COULD_MIDDLE
+                   //The water level is either at LOW, in which case COULD_MIDDLE can set it to MID, MID, or HIGH, so we only have to check COULD_MIDDLE
                    //if we don't have ZL, then we are at high, so we can skip that too
                    (Get(LOGIC_WATER_COULD_MIDDLE));
     }
@@ -1200,8 +1220,39 @@ bool Logic::BlueFire() {
     return CanUse(RG_BOTTLE_WITH_BLUE_FIRE) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
 }
 
-bool Logic::CanBreakPots() {
-    return true;
+bool Logic::CanBreakPots(EnemyDistance distance, bool inWater) {
+    bool hit = false;
+    switch (distance) {
+        case ED_CLOSE:
+            hit = true; //str0
+            [[fallthrough]];
+        case ED_SHORT_JUMPSLASH:
+            hit = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MEGATON_HAMMER);
+            [[fallthrough]];
+        case ED_MASTER_SWORD_JUMPSLASH:
+            hit = hit || CanUse(RG_MASTER_SWORD);
+            [[fallthrough]];
+        case ED_LONG_JUMPSLASH:
+            hit = hit || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+            [[fallthrough]];
+        case ED_BOMB_THROW:
+            hit = hit || (!inWater && CanUse(RG_BOMB_BAG));
+            [[fallthrough]];
+        case ED_BOOMERANG:
+            hit = hit || CanUse(RG_BOOMERANG);
+            [[fallthrough]];
+        case ED_HOOKSHOT:
+            // RANDOTODO test chu range in a practical example
+            hit = hit || CanUse(RG_HOOKSHOT) || CanUse(RG_BOMBCHU_5);
+            [[fallthrough]];
+        case ED_LONGSHOT:
+            hit = hit || CanUse(RG_LONGSHOT);
+            [[fallthrough]];
+        case ED_FAR:
+            hit = hit || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+            break;
+    }
+    return hit;
 }
 
 bool Logic::CanBreakCrates() {

@@ -906,8 +906,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(
         RT_WATER_BK_JUMP_DIVE, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
         "Water Temple Boss Key Jump Dive",
-        "Stand on the very edge of the raised corridor leading from the push block room to the rolling boulder "
-        "corridor. Face the Gold Skulltula on the waterfall and jump over the boulder corridor floor into the pool of "
+        "As adult, Stand on the very edge of the alcove leading from the jets room to the rolling boulder "
+        "river. Face the Gold Skulltula on the waterfall and jump over the boulder river floor into the pool of "
         "water, swimming right once underwater. This allows access to the boss key room without Iron boots.");
     // Also used in MQ logic, but won't be relevent unless a way to enter tower without irons exists (likely a clip +
     // swim)
@@ -929,7 +929,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(
         RT_WATER_HOOKSHOT_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
         "Water Temple Falling Platform Room GS with Hookshot",
-        "If you stand on the very edge of the platform, this Gold Skulltula can be obtained with only the Hookshot.");
+        "If you stand on the very edge of the platform, adult can obtain this Gold Skulltula with only the Hookshot.");
     OPT_TRICK(
         RT_WATER_RANG_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
         "Water Temple Falling Platform Room GS with Boomerang",
@@ -937,8 +937,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_WATER_RIVER_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
               "Water Temple River GS without Iron Boots",
               "Standing on the exposed ground toward the end of the river, a precise Longshot use can obtain the "
-              "token. The Longshot cannot normally reach far enough to kill the Skulltula, however. You'll first have "
-              "to find some other way of killing it.");
+              "token as Adult. The Longshot cannot normally reach far enough to kill the Skulltula, however."
+              "You'll first have to find some other way of killing it.");
     OPT_TRICK(RT_WATER_DRAGON_JUMP_DIVE, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
               "Water Temple Dragon Statue Jump Dive",
               "If you come into the dragon statue room from the serpent river, you can jump down from above and get "
