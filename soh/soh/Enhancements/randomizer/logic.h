@@ -60,7 +60,6 @@ class Logic {
     bool Water3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
-    bool MQWaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
