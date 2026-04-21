@@ -270,7 +270,10 @@ void RegisterShuffleRock() {
     COND_VB_SHOULD(VB_ROCK_DROP_ITEM, shouldRegister, {
         Actor* rockActor = va_arg(args, Actor*);
         const auto rockIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(rockActor);
-        if (rockIdentity != nullptr && Rock_RandomizerHoldsItem(*rockIdentity, gPlayState, rockActor->params & 1)) {
+        if (rockIdentity != nullptr &&
+            Rock_RandomizerHoldsItem(*rockIdentity, gPlayState,
+                                     rockActor->id == ACTOR_OBJ_BOMBIWA || rockActor->id == ACTOR_OBJ_HAMISHI ||
+                                         rockActor->params & 1)) {
             Rock_RandomizerSpawnCollectible(rockActor, *rockIdentity, gPlayState);
             rockIdentity->randomizerCheck = RC_MAX;
             rockIdentity->randomizerInf = RAND_INF_MAX;
