@@ -99,17 +99,18 @@ void Menu::RemoveSidebarSearch() {
 }
 
 void Menu::UpdateWindowBackendObjects() {
-    Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
+    Fast::WindowBackend runningWindowBackend =
+        (Fast::WindowBackend)Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
     int32_t configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
     if (Ship::Context::GetInstance()->GetWindow()->IsAvailableWindowBackend(configWindowBackendId)) {
-        configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
+        configWindowBackend = static_cast<Fast::WindowBackend>(configWindowBackendId);
     } else {
         configWindowBackend = runningWindowBackend;
     }
 
     availableWindowBackends = Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends();
     for (auto& backend : *availableWindowBackends) {
-        availableWindowBackendsMap[backend] = windowBackendsMap.at(backend);
+        availableWindowBackendsMap[(Fast::WindowBackend)backend] = windowBackendsMap.at((Fast::WindowBackend)backend);
     }
 }
 
@@ -208,8 +209,7 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                             info.type == WIDGET_SEPARATOR_TEXT || info.isHidden || info.hideInSearch) {
                             continue;
                         }
-                        const char* tooltip = info.options->tooltip;
-                        std::string widgetStr = std::string(info.name) + std::string(tooltip != NULL ? tooltip : "");
+                        std::string widgetStr = std::string(info.name) + info.options->tooltip;
                         std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
                         widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
                         if (widgetStr.find(menuSearchText) != std::string::npos) {

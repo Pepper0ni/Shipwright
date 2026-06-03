@@ -6,6 +6,8 @@
 #include "functions.h"
 #include "macros.h"
 #include <libultraship/bridge/consolevariablebridge.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
@@ -133,9 +135,8 @@ Fishsanity::GetFishingPondLocations(FishsanityOptionsSource optionsSource) {
     }
     // NOTE: This only works because we can assume activeFish is already sorted; changes that break this assumption will
     // also break this
-    FilterAndEraseFromPool(remainingFish, [&](RandomizerCheck loc) {
-        return std::binary_search(activeFish.begin(), activeFish.end(), loc);
-    });
+    std::erase_if(remainingFish,
+                  [&](RandomizerCheck loc) { return std::binary_search(activeFish.begin(), activeFish.end(), loc); });
 
     return std::make_pair(activeFish, remainingFish);
 }

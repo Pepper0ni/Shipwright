@@ -3,6 +3,7 @@
 #include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 static bool isResultOfHandling = false;
 
@@ -38,9 +39,9 @@ void Anchor::HandlePacket_SetCheckStatus(nlohmann::json payload) {
 
     auto randoContext = Rando::Context::GetInstance();
 
-    RandomizerCheck rc = payload["rc"].get<RandomizerCheck>();
-    RandomizerCheckStatus status = payload["status"].get<RandomizerCheckStatus>();
-    bool skipped = payload["skipped"].get<bool>();
+    RandomizerCheck rc = payload.at("rc").get<RandomizerCheck>();
+    RandomizerCheckStatus status = payload.at("status").get<RandomizerCheckStatus>();
+    bool skipped = payload.at("skipped").get<bool>();
 
     isResultOfHandling = true;
 

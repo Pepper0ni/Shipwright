@@ -14,6 +14,7 @@
 #include "soh/ShipInit.hpp"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "macros.h"
@@ -1658,7 +1659,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             Flags_SetInfTable(INFTABLE_191);
             gSaveContext.dogParams = 0;
             gSaveContext.dogIsLost = false;
-            enHy->actionFunc = func_80A7127C;
+            enHy->actionFunc = EnHy_Fidget;
             *should = false;
             break;
         }
@@ -2535,7 +2536,7 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
         } else if (actor->id == ACTOR_DOOR_SHUTTER) {
             DoorShutter* shutterDoor = reinterpret_cast<DoorShutter*>(actor);
             if (shutterDoor->doorType == SHUTTER_KEY_LOCKED) {
-                shutterDoor->unk_16E = 0;
+                shutterDoor->unlockTimer = 0;
             }
         } else if (actor->id == ACTOR_DOOR_GERUDO) {
             DoorGerudo* gerudoDoor = reinterpret_cast<DoorGerudo*>(actor);
