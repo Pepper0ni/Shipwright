@@ -12678,10 +12678,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     if (CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
         CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
         f32 movementSpeed = LINK_IS_ADULT ? 9.0f : 8.25f;
-        if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
-            this->currentMask == PLAYER_MASK_BUNNY) {
-            movementSpeed *= 1.5f;
-        }
+        GameInteractor_Should(VB_PLAYER_MODIFY_FIRST_PERSON_SPEED, true, this, &movementSpeed);
 
         f32 relX = (sControlInput->rel.stick_x / 10 * -invertXAxisMulti);
         f32 relY = (sControlInput->rel.stick_y / 10);

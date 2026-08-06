@@ -425,15 +425,14 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_ENTRANCE_SIDE_BRIDGE] = Region("Dodongos Cavern MQ Entrance Side Bridge", SCENE_DODONGOS_CAVERN, {
         //Events
-        EVENT_ACCESS(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, (((logic->IsAdult /*or bunny hood jump*/) && (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))) || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_STICKS)),
+        EVENT_ACCESS(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, (((logic->IsAdult || (ctx->GetTrickOption(RT_BUNNY_HOOD_JUMPS) && logic->BunnyHood())) && (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))) || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_STICKS)),
         EVENT_ACCESS(LOGIC_DC_MQ_CLEAR_BIG_BLOCK_WEB,     logic->CanUse(RG_STICKS) && logic->HasItem(RG_POWER_BRACELET)),
     }, {}, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOBBY,              logic->TakeDamage()),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_DODONGO_ROOM,       true),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LARVAE_ROOM,        logic->CanUse(RG_STICKS) && logic->HasItem(RG_POWER_BRACELET)), //assumes RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_LOWER access.
-        //Bunny hood jump can make it as child
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER, (logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER, (logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_BUNNY_HOOD_JUMPS) && logic->BunnyHood())),
         //Implies access to RR_DODONGOS_CAVERN_MQ_BIG_BLOCK_ROOM and RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_LOWER from here
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_UPPER_LIZALFOS,     logic->CanUse(RG_STICKS) && logic->HasItem(RG_GORONS_BRACELET)),
     });
@@ -451,8 +450,7 @@ void RegionTable_Init_DodongosCavern() {
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LARVAE_ROOM,          logic->HasFireSource()),
         //you can platform off the blocks to get here without climb
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_BIG_BLOCK_ROOM,       logic->Get(LOGIC_DC_MQ_CLEAR_BIG_BLOCK_WEB)), //Includes an implied CanPass(RE_BIG_SKULLTULA)
-        //Bunny hood jump can make it as child
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER,   (logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->CanGroundJump())) || logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER,   (logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->CanGroundJump())) || logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_BUNNY_HOOD_JUMPS) && logic->BunnyHood())),
     });
 
     areaTable[RR_DODONGOS_CAVERN_MQ_BIG_BLOCK_ROOM] = Region("Dodongos Cavern MQ Big Block Room", SCENE_DODONGOS_CAVERN, {
@@ -613,7 +611,7 @@ void RegionTable_Init_DodongosCavern() {
         //This may be trickworthy, but it can only come up with doorsanity or decoupled boss door rando, making it too niche to be it's own trick
         LOCATION(RC_DODONGOS_CAVERN_MQ_GS_BACK_AREA,       logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || 
                                                            (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET) && 
-                                                            (logic->CanPassEnemy(RE_ARMOS) || logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)/* && Roll*/)/* || bunny jumps*/))),
+                                                            (logic->CanPassEnemy(RE_ARMOS) || logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)/* && Roll*/) || (ctx->GetTrickOption(RT_BUNNY_HOOD_JUMPS) && logic->BunnyHood())))),
         LOCATION(RC_DODONGOS_CAVERN_MQ_BEFORE_BOSS_SW_POT, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_BEFORE_BOSS_NE_POT, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_ARMOS_ROOM_SE_POT,  logic->CanBreakPots()),
@@ -622,7 +620,7 @@ void RegionTable_Init_DodongosCavern() {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOBBY,             true),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_BACK_BEHIND_FIRE,  logic->HasItem(RG_POWER_BRACELET) || logic->HasExplosives() || 
-                                                          (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)/* && Roll*/)/* || bunny jumps*/))),
+                                                          (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)/* && Roll*/) || (ctx->GetTrickOption(RT_BUNNY_HOOD_JUMPS) && logic->BunnyHood())))),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_BACK_SWITCH_GRAVE, logic->IsAdult),
     });
 

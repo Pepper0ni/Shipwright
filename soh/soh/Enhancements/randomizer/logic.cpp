@@ -130,6 +130,22 @@ bool Logic::HasItem(RandomizerGet itemName) {
                     assert(false);
                     return false;
             }
+        case RG_BUNNY_HOOD:
+            // set when shuffled masks are found, and when starting with the hood
+            if (CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY)) {
+                return true;
+            }
+            switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
+                case RO_MASK_QUEST_VANILLA:
+                    return Get(LOGIC_BORROW_BUNNY_HOOD);
+                case RO_MASK_QUEST_COMPLETED:
+                    return Get(LOGIC_KAKARIKO_GATE_OPEN);
+                case RO_MASK_QUEST_SHUFFLE:
+                    return false;
+                default:
+                    assert(false);
+                    return false;
+            }
         case RG_MASK_OF_TRUTH:
             switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
                 case RO_MASK_QUEST_VANILLA:
@@ -624,6 +640,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return IsChild;
         case RG_SKULL_MASK:
         case RG_MASK_OF_TRUTH:
+        case RG_BUNNY_HOOD:
             return IsChild;
 
         // Songs
@@ -1707,6 +1724,11 @@ bool Logic::HasFireSourceWithTorch() {
 
 bool Logic::SunlightArrows() {
     return ctx->GetOption(RSK_SUNLIGHT_ARROWS) && CanUse(RG_LIGHT_ARROWS);
+}
+
+// Bunny Hood grants the Majora's Mask run speed and jump distance boost
+bool Logic::BunnyHood() {
+    return ctx->GetOption(RSK_BUNNY_HOOD) && CanUse(RG_BUNNY_HOOD);
 }
 
 bool Logic::CanStandingShield() {
@@ -2912,7 +2934,7 @@ bool Logic::MQSpiritWestToPots() {
 
 bool Logic::MQSpiritStatueToSunBlock() {
     return (IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) ||
-            CanUse(RG_SONG_OF_TIME) /* || CanBunnyJump()*/) &&
+            CanUse(RG_SONG_OF_TIME) /* || BunnyHood()*/) &&
            HasItem(RG_POWER_BRACELET);
 }
 

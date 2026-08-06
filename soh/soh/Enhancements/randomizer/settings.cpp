@@ -1402,6 +1402,7 @@ void Settings::CreateOptions() {
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     OPT_BOOL(RSK_BLUE_FIRE_ARROWS, "Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     OPT_BOOL(RSK_SUNLIGHT_ARROWS, "Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
+    OPT_BOOL(RSK_BUNNY_HOOD, "Bunny Hood Effect", CVAR_RANDOMIZER_SETTING("BunnyHood"), mOptionDescriptions[RSK_BUNNY_HOOD]);
     OPT_BOOL(RSK_ROCS_FEATHER, "Roc's Feather", CVAR_RANDOMIZER_SETTING("RocsFeather"), mOptionDescriptions[RSK_ROCS_FEATHER]);
     OPT_U8(RSK_INFINITE_UPGRADES, "Infinite Upgrades", {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"), mOptionDescriptions[RSK_INFINITE_UPGRADES]);
     OPT_BOOL(RSK_SKELETON_KEY, "Skeleton Key", CVAR_RANDOMIZER_SETTING("SkeletonKey"), mOptionDescriptions[RSK_SKELETON_KEY]);
@@ -1595,10 +1596,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "UnJmp");
     OPT_TRICK(RT_FIRE_RINGS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FlaChst");
 
-    // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
-    // decoupled from rando
-
-    // OPT_TRICK(RT_BUNNY_HOOD_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED });
+    // only does anything with the Bunny Hood Effect setting on
+    OPT_TRICK(RT_BUNNY_HOOD_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED }, "BunJmp");
 
     OPT_TRICK(RT_DAMAGE_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL },
               "SDmgBoo");
@@ -1678,10 +1677,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GF_LEDGE_CLIP_INTO_GTG, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "GTGLdgClp");
 
-    // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
-    // decoupled from rando
-
-    // OPT_TRICK(RT_HW_BUNNY_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::NOVICE });
+    // only does anything with the Bunny Hood Effect setting on
+    OPT_TRICK(RT_HW_BUNNY_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::NOVICE }, "HWBun");
 
     OPT_TRICK(RT_HW_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "RvrSand");
     OPT_TRICK(RT_LENS_HW, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "HWNoLoT");
@@ -1875,6 +1872,7 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_BIG_POE_COUNT],
                                                                       &mOptions[RSK_BLUE_FIRE_ARROWS],
                                                                       &mOptions[RSK_SUNLIGHT_ARROWS],
+                                                                      &mOptions[RSK_BUNNY_HOOD],
                                                                       &mOptions[RSK_FULL_WALLETS],
                                                                       &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
                                                                       &mOptions[RSK_SWORDLESS_EPONA_ITEMS],
@@ -2453,6 +2451,7 @@ void Settings::CreateOptions() {
                                               &mOptions[RSK_DAMAGE_MULTIPLIER],
                                               &mOptions[RSK_BLUE_FIRE_ARROWS],
                                               &mOptions[RSK_SUNLIGHT_ARROWS],
+                                              &mOptions[RSK_BUNNY_HOOD],
                                               &mOptions[RSK_INFINITE_UPGRADES],
                                               &mOptions[RSK_SKELETON_KEY],
                                               &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],

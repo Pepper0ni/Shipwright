@@ -3639,6 +3639,45 @@ typedef enum {
     // a textbox can be rendered instead. Pause screen only, Game Over version left
     // intact.
     VB_DRAW_SAVE_MENU,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether NPCs give their mask reaction text for the mask being worn.
+    // #### `args`
+    // - `u8 currentMask`
+    VB_NPC_REACT_TO_MASK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether a trade item button gets greyed out while trade items are restricted.
+    // #### `args`
+    // - `u8 item`
+    VB_DISABLE_TRADE_ITEM_BUTTON,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Movement speed for the "Move in first person" setting, multiplied in place.
+    // #### `args`
+    // - `*Player`
+    // - `f32*` movementSpeed
+    VB_PLAYER_MODIFY_FIRST_PERSON_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the market night guard goes back to idle once talked to, rather than
+    // a hook taking over his action func.
+    // #### `args`
+    // - `*EnHeishi4`
+    // - `*PlayState`
+    VB_MARKET_NIGHT_GUARD_SET_ACTION_AFTER_TALK,
 } GIVanillaBehavior;
 
 #endif
