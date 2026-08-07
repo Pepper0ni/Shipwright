@@ -56,7 +56,7 @@ void RegionTable_Init_SpiritTemple() {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_CHILD_SIDE_HUB,      true),
         ENTRANCE(RR_SPIRIT_TEMPLE_SWITCH_BRIDGE_NORTH, (logic->Get(LOGIC_SPIRIT_CHILD_SWITCH_BRIDGE) && logic->CanPassEnemy(RE_GREEN_BUBBLE, ED_CLOSE, false)) || 
-                                                       logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT)/* || (logic->IsAdult && logic->BunnyHood())*/),
+                                                       logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->BunnyHood())),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_SWITCH_BRIDGE_NORTH] = Region("Spirit Temple Switch Bridge North", SCENE_SPIRIT_TEMPLE, {
@@ -169,10 +169,10 @@ void RegionTable_Init_SpiritTemple() {
         //Jumpslash is possible as child, but pretty tight. Jumpslash as late as you can
         //A damage boost off the boulder is also possible, but you need to land on the middle of the boulder
         //to get enough distance to reach the rupee
-        EVENT_ACCESS(LOGIC_SPIRIT_SILVER_BOULDERS, logic->CanUse(RG_HOVER_BOOTS) || logic->CanJumpslash() || logic->CanUse(RG_LONGSHOT)/* || logic->BunnyHood()*/),
+        EVENT_ACCESS(LOGIC_SPIRIT_SILVER_BOULDERS, logic->CanUse(RG_HOVER_BOOTS) || logic->CanJumpslash() || logic->CanUse(RG_LONGSHOT) || logic->BunnyHood()),
     }, {
         //Locations
-        LOCATION(RC_SPIRIT_AIRBORNE_BOULDER_SILVER, logic->CanUse(RG_HOVER_BOOTS) || logic->CanJumpslash() || logic->CanUse(RG_LONGSHOT)/* || logic->BunnyHood()*/),
+        LOCATION(RC_SPIRIT_AIRBORNE_BOULDER_SILVER, logic->CanUse(RG_HOVER_BOOTS) || logic->CanJumpslash() || logic->CanUse(RG_LONGSHOT) || logic->BunnyHood()),
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_ADULT_SIDE_HUB, true),
@@ -262,7 +262,7 @@ void RegionTable_Init_SpiritTemple() {
                                                          RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD, []{return logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT);})),
     }, {
         //Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD, logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)/* || logic->BunnyHood()*/),
+        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD, logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || logic->BunnyHood()),
         ENTRANCE(RR_SPIRIT_TEMPLE_INNER_WEST_HAND,   true)
     });
 
@@ -388,7 +388,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM,       true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT, logic->CanUse(RG_HOVER_BOOTS)/* || logic->BunnyHood()*/),
+        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT, logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
         //Assumes RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT access via RR_SPIRIT_TEMPLE_STATUE_ROOM
         ENTRANCE(RR_SPIRIT_TEMPLE_SHORTCUT_SWITCH,   (logic->IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) ||
                                                      (logic->CanUse(RG_ZELDAS_LULLABY) && logic->CanUse(RG_HOOKSHOT))),
@@ -565,7 +565,7 @@ void RegionTable_Init_SpiritTemple() {
         //If this interaction with the hands is added, SpiritSharedLogic needs updating for it
         ENTRANCE(RR_SPIRIT_TEMPLE_INNER_WEST_HAND,  logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_SPIRIT_TEMPLE_INNER_LEFT_HAND,  logic->CanUse(RG_HOVER_BOOTS)),
-        ENTRANCE(RR_SPIRIT_TEMPLE_PLATFORM,         logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)/* || (logic->IsAdult && logic->BunnyHood())*/)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_PLATFORM,         logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->BunnyHood()))),
         ENTRANCE(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY,    true),
     });
 
@@ -628,7 +628,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_GIBDO_GRAVES] = Region("Spirit Temple MQ Gibdo Graves", SCENE_SPIRIT_TEMPLE, {
         //Events
         EVENT_ACCESS(LOGIC_SPIRIT_MQ_GIBDOS_CLEARED, logic->HasItem(RG_POWER_BRACELET) &&
-                                                     ((logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets()) || logic->CanUse(RG_HOVER_BOOTS)/* || (logic->IsAdult && logic->BunnyHood())*/)
+                                                     ((logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets()) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()))
                                                      && logic->CanKillEnemy(RE_GIBDO, ED_CLOSE, true, 3)),
     }, {
         //Location
@@ -639,7 +639,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB, true),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_GIBDO_POTS,     logic->HasItem(RG_POWER_BRACELET) &&
                                                      (logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets()) ||
-                                                     logic->CanUse(RG_HOVER_BOOTS)/* || (logic->IsAdult && logic->BunnyHood())*/),
+                                                     logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood())),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_GIBDO_POTS] = Region("Spirit Temple MQ Gibdo Pots", SCENE_SPIRIT_TEMPLE, {}, {
@@ -677,7 +677,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_ANUBIS_BRIDGE_GRAVE] = Region("Spirit Temple MQ Anubis Bridge Grave", SCENE_SPIRIT_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_SPIRIT_MQ_MAP_ROOM_ENEMIES, (logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE)) && (logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) /*|| (logic->IsAdult && logic->BunnyHood())*/) ||
+        EVENT_ACCESS(LOGIC_SPIRIT_MQ_MAP_ROOM_ENEMIES, (logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE)) && (logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->BunnyHood())) ||
                                                        (logic->CanKillEnemy(RE_ANUBIS, ED_BOOMERANG) && logic->CanKillEnemy(RE_KEESE, ED_FAR))),
     }, {
         //Locations
@@ -685,7 +685,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_TURNTABLE,           true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_ANUBIS_BRIDGE_CHEST, logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) /*|| (logic->IsAdult && logic->BunnyHood())*/),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_ANUBIS_BRIDGE_CHEST, logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->BunnyHood())),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_ANUBIS_BRIDGE_CHEST] = Region("Spirit Temple MQ Anubis Bridge Chest", SCENE_SPIRIT_TEMPLE, {
@@ -698,7 +698,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //The bridge is a temp flag, so not a way to cross south to north in logic
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_ANUBIS_BRIDGE_GRAVE, logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS)/* || (logic->IsAdult && logic->BunnyHood())*/),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_ANUBIS_BRIDGE_GRAVE, logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood())),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB,      true),
     });
 
@@ -756,7 +756,7 @@ void RegionTable_Init_SpiritTemple() {
                                                           (logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && AnyAgeTime([]{return logic->CanUse(RG_MEGATON_HAMMER);})))),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,        logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6)),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_POT_LEDGE,           logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME)),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INNER_RIGHT_HAND,    logic->IsAdult || logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)/* || logic->BunnyHood()*/),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INNER_RIGHT_HAND,    logic->IsAdult || logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FLAMETHROWER_STAIRS, logic->MQSpiritStatueToSunBlock()),
         //explicit adult check here is a precaution against possible child logic leaking, child with a hookshot can do this
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT,   logic->IsAdult && logic->CanUse(RG_HOOKSHOT)),
@@ -896,7 +896,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT] = Region("Spirit Temple MQ Statue Room Adult", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,            true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INNER_LEFT_HAND,        logic->IsAdult || logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)/* || logic->BunnyHood()*/),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INNER_LEFT_HAND,        logic->IsAdult || logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHEST_LEDGE,            logic->CanUse(RG_HOVER_BOOTS) || 
                                                              ((ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_LONGSHOT))),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_3_SUNS_ROOM_2F,         logic->Get(LOGIC_SPIRIT_MQ_STATUE_ROOM_TORCHES)),
@@ -925,7 +925,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,       true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT, logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT)/* || logic->BunnyHood()*/),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT, logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || logic->BunnyHood()),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INNER_LEFT_HAND,   true),
     });
 
@@ -1184,7 +1184,7 @@ void RegionTable_Init_SpiritTemple() {
         //If this interaction with the hands is added, SpiritSharedLogic needs updating for it
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INNER_RIGHT_HAND, logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INNER_LEFT_HAND,  logic->CanUse(RG_HOVER_BOOTS)),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_PLATFORM,         logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)/* || (logic->IsAdult && logic->BunnyHood())*/)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_PLATFORM,         logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->BunnyHood()))),
         ENTRANCE(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY,       true),
     });
 

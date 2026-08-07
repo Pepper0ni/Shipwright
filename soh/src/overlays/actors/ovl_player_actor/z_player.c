@@ -20,6 +20,7 @@
 #include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "soh/Enhancements/AdultMasks.h"
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
@@ -5558,8 +5559,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             Player_SetupAction(play, this, Player_Action_WaitForCutscene, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-            if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0) ||
-                !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0)) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0) || !Ship_MasksEquippableAsAdult()) {
                 gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
             }
         } else {

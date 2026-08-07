@@ -641,7 +641,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
         case RG_SKULL_MASK:
         case RG_MASK_OF_TRUTH:
         case RG_BUNNY_HOOD:
-            return IsChild;
+            return IsChild || ctx->GetOption(RSK_MASKS_AS_ADULT);
 
         // Songs
         case RG_ZELDAS_LULLABY:
@@ -1729,6 +1729,11 @@ bool Logic::SunlightArrows() {
 // Bunny Hood grants the Majora's Mask run speed and jump distance boost
 bool Logic::BunnyHood() {
     return ctx->GetOption(RSK_BUNNY_HOOD) && CanUse(RG_BUNNY_HOOD);
+}
+
+// Hovering with the extra speed the hood gives
+bool Logic::BunnyHovers() {
+    return CanUse(RG_HOVER_BOOTS) && BunnyHood();
 }
 
 bool Logic::CanStandingShield() {
@@ -2915,7 +2920,7 @@ bool Logic::SpiritWestToSkull() {
 
 bool Logic::SpiritSunBlockSouthLedge() {
     // also possible to do a backwalk hover + backflip if you equip hovers as you start backwalk to accelerate faster
-    return HasItem(RG_POWER_BRACELET) || IsAdult || CanKillEnemy(RE_BEAMOS) /*|| BunnyHovers()*/ ||
+    return HasItem(RG_POWER_BRACELET) || IsAdult || CanKillEnemy(RE_BEAMOS) || BunnyHovers() ||
            (CanUse(RG_HOOKSHOT) &&
             (HasFireSource() ||
              (Get(LOGIC_SPIRIT_SUN_BLOCK_TORCH) &&
@@ -2933,8 +2938,7 @@ bool Logic::MQSpiritWestToPots() {
 }
 
 bool Logic::MQSpiritStatueToSunBlock() {
-    return (IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) ||
-            CanUse(RG_SONG_OF_TIME) /* || BunnyHood()*/) &&
+    return (IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || CanUse(RG_SONG_OF_TIME) || BunnyHood()) &&
            HasItem(RG_POWER_BRACELET);
 }
 

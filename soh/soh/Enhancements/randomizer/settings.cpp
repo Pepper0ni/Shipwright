@@ -1403,6 +1403,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_BLUE_FIRE_ARROWS, "Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     OPT_BOOL(RSK_SUNLIGHT_ARROWS, "Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
     OPT_BOOL(RSK_BUNNY_HOOD, "Bunny Hood Effect", CVAR_RANDOMIZER_SETTING("BunnyHood"), mOptionDescriptions[RSK_BUNNY_HOOD]);
+    OPT_BOOL(RSK_MASKS_AS_ADULT, "Masks as Adult", CVAR_RANDOMIZER_SETTING("MasksAsAdult"), mOptionDescriptions[RSK_MASKS_AS_ADULT]);
     OPT_BOOL(RSK_ROCS_FEATHER, "Roc's Feather", CVAR_RANDOMIZER_SETTING("RocsFeather"), mOptionDescriptions[RSK_ROCS_FEATHER]);
     OPT_U8(RSK_INFINITE_UPGRADES, "Infinite Upgrades", {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"), mOptionDescriptions[RSK_INFINITE_UPGRADES]);
     OPT_BOOL(RSK_SKELETON_KEY, "Skeleton Key", CVAR_RANDOMIZER_SETTING("SkeletonKey"), mOptionDescriptions[RSK_SKELETON_KEY]);
@@ -1873,6 +1874,7 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_BLUE_FIRE_ARROWS],
                                                                       &mOptions[RSK_SUNLIGHT_ARROWS],
                                                                       &mOptions[RSK_BUNNY_HOOD],
+                                                                      &mOptions[RSK_MASKS_AS_ADULT],
                                                                       &mOptions[RSK_FULL_WALLETS],
                                                                       &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
                                                                       &mOptions[RSK_SWORDLESS_EPONA_ITEMS],
@@ -2452,6 +2454,7 @@ void Settings::CreateOptions() {
                                               &mOptions[RSK_BLUE_FIRE_ARROWS],
                                               &mOptions[RSK_SUNLIGHT_ARROWS],
                                               &mOptions[RSK_BUNNY_HOOD],
+                                              &mOptions[RSK_MASKS_AS_ADULT],
                                               &mOptions[RSK_INFINITE_UPGRADES],
                                               &mOptions[RSK_SKELETON_KEY],
                                               &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],

@@ -3,6 +3,7 @@
 
 #include <string.h>
 
+#include "soh/Enhancements/AdultMasks.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/frame_interpolation.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
@@ -560,7 +561,7 @@ void Play_Init(GameState* thisx) {
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
 
     // In order to keep masks equipped on first load, we need to pre-set the age reqs for the item and slot
-    if (CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
+    if (Ship_MasksEquippableAsAdult()) {
         for (int i = ITEM_MASK_KEATON; i <= ITEM_MASK_TRUTH; i += 1) {
             gItemAgeReqs[i] = AGE_REQ_NONE;
         }
