@@ -114,7 +114,7 @@ void RegionTable_Init_DekuTree() {
         //Exits
         ENTRANCE(RR_DEKU_TREE_LOBBY,               logic->HasItem(RG_CLIMB) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT))),
         ENTRANCE(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM, AnyAgeTime([]{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);})),
-        ENTRANCE(RR_DEKU_TREE_BASEMENT_UPPER,      logic->IsAdult || ctx->GetTrickOption(RT_DEKU_B1_SKIP) || logic->CanGroundJump() || logic->Get(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK)),
+        ENTRANCE(RR_DEKU_TREE_BASEMENT_UPPER,      logic->IsAdult || logic->BunnyHood() || ctx->GetTrickOption(RT_DEKU_B1_SKIP) || logic->CanGroundJump() || logic->Get(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK)),
         ENTRANCE(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,   false),
     });
 
