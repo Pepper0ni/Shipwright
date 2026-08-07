@@ -117,10 +117,6 @@
 					"letting you interact with some objects inside them such as large chests"
 				]
 			},
-			"bunny_hood_jumps": {
-				"name": "Bunny Hood Jumps",
-				"description": "Allows reaching locations using Bunny Hood's extended jumps."
-			},
 			"damage_boost_simple": {
 				"name": "Simple damage boosts",
 				"description": "Allows damage boosts in order to reach further locations. Can be combined with \"Simple hover boosts\" for reaching far distances."
