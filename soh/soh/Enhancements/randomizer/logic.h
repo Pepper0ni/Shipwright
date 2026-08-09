@@ -61,7 +61,7 @@ class Logic {
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
-    bool CanHammerRecoilHover(bool needShield = false);
+    bool CanRecoilHover(RecoilRequirements req);
     bool Water3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);

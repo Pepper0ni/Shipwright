@@ -1319,9 +1319,25 @@ bool Logic::CanDetonateUprightBombFlower() {
             (EffectiveHealth() != 1 || CanUse(RG_NAYRUS_LOVE)));
 }
 
-bool Logic::CanHammerRecoilHover(bool needShield) {
-    return CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && CanUse(RG_MEGATON_HAMMER) &&
-           (!needShield || CanStandingShield());
+bool Logic::CanRecoilHover(RecoilRequirements req) {
+    if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))){
+        return false;
+    }
+    bool can = false;
+    switch (req){
+        case RECOIL_SWORD_AND_SHIELD:
+        //hammer without shield gives better recoils than sword and shield
+            can = (CanJumpslash() && CanStandingShield());
+            [[fallthrough]];
+        case RECOIL_HAMMER:
+            can = can || CanUse(RG_MEGATON_HAMMER);
+            break;
+        case RECOIL_HAMMER_AND_SHIELD:
+            can = (CanUse(RG_MEGATON_HAMMER) && CanStandingShield());
+        default:
+            break;
+    }
+    return can;
 }
 
 bool Logic::Water3FCentralToHighEmblem() {

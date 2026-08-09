@@ -1395,7 +1395,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_WATER_SPROUTS_2, logic->IsAdult),
     }, {
         //Exits
-        ENTRANCE(RR_WATER_TEMPLE_MQ_3_JETS_ROOM_SWITCH_SIDE, logic->CanHitSwitch(ED_BOOMERANG) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanHammerRecoilHover())),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_3_JETS_ROOM_SWITCH_SIDE, logic->CanHitSwitch(ED_BOOMERANG) || logic->CanRecoilHover(RECOIL_HAMMER)),
     });
 
     areaTable[RR_WATER_TEMPLE_MQ_DODONGO_ROOM] = Region("Water Temple MQ Dodongo Room", SCENE_WATER_TEMPLE, {}, {

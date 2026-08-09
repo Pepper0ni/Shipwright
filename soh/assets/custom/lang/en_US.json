@@ -500,7 +500,7 @@
 			},
 			"dc_scrub_room": {
 				"name": "Dodongo's Cavern Two Scrub Room with Strength",
-				"description": "With help from a conveniently-positioned block, Adult can quickly carry a Bomb Flower over to destroy the mud wall blocking the room with two Deku Scrubs."
+				"description": "With help from a conveniently-positioned block, Adult (or Child with Bunny Hood) can quickly carry a Bomb Flower over to destroy the mud wall blocking the room with two Deku Scrubs."
 			},
 			"dc_jump": {
 				"name": "Dodongo's Cavern Spike Trap Room Jump without Hover Boots",
@@ -514,13 +514,17 @@
 				"name": "Dodongo's Cavern Dodongo with Only Bombchus",
 				"description": "With precise timing you can feed King Dodongo a bombchu during a backflip"
 			},
+			"dc_eyes_bunnyhovers": {
+				"name": "Dodongo's Cavern Dodongo with Goron Braclet and Bunnyhovers",
+				"description": "With precisly timed movement using both Bunny Hood and Hover Boots you can use the high-rising platform to carry a Bomb Flower to the Dodongo's Head and quickly throw it close enough to the eyes to trigger them. This requires \"Bunny Hood in Logic\" to function."
+			},
 			"dc_mq_stairs_with_only_strength": {
 				"name": "Dodongo's Cavern MQ Stairs With Only Strength",
 				"description": "Taking a bomb from the back can be used to lower stairs without using stick to drop bomb from wall."
 			},
-			"dc_mq_child_bombs": {
-				"name": "Dodongo's Cavern MQ Early Bomb Bag Area as Child",
-				"description": "With a precise jumpslash from above, you can reach the Bomb Bag area as only child without needing a Slingshot. You will take fall damage."
+			"dc_child_lobby": {
+				"name": "Dodongo's Cavern Lobby Recoil to Ledge as Child",
+				"description": "With a precise jumpslash from above, you can reach the ledge in DC Lobby as Child from the upper area near the tablet. You will take fall damage."
 			},
 			"dc_mq_child_eyes": {
 				"name": "Dodongo's Cavern MQ Light the Eyes with Strength as Child",
