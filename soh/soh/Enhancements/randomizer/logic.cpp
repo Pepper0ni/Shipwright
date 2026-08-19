@@ -1232,11 +1232,11 @@ bool Logic::CanAvoidEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool gr
         case RE_WALLTULA:
             return true;
         case RE_BEAMOS:
-            if (!grounded){
+            if (!grounded) {
                 return true;
             }
             switch (distance) {
-            //melee can stun, but doing so means getting close anyway
+                    // melee can stun, but doing so means getting close anyway
                 case ED_CLOSE:
                 case ED_SHORT_JUMPSLASH:
                 case ED_MASTER_SWORD_JUMPSLASH:
@@ -1345,16 +1345,16 @@ bool Logic::CanDetonateUprightBombFlower() {
 }
 
 bool Logic::CanRecoilHover(RecoilRequirements req) {
-    if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))){
+    if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))) {
         return false;
     }
     bool can = false;
-    switch (req){
+    switch (req) {
         case RECOIL_SWORD:
             can = CanJumpslash();
             break;
         case RECOIL_SWORD_AND_SHIELD:
-        //hammer without shield gives better recoils than sword and shield
+            // hammer without shield gives better recoils than sword and shield
             can = (CanJumpslash() && CanStandingShield());
             [[fallthrough]];
         case RECOIL_HAMMER:
@@ -1368,13 +1368,13 @@ bool Logic::CanRecoilHover(RecoilRequirements req) {
     return can;
 }
 
-//torches seem to normalise recoil distance, so the only thing that can matter is attack range
+// torches seem to normalise recoil distance, so the only thing that can matter is attack range
 bool Logic::CanRecoilHoverFromTorch(TorchRecoilRequirements req) {
-    if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))){
+    if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))) {
         return false;
     }
     bool can = false;
-    switch (req){
+    switch (req) {
         case TRECOIL_LONG_AND_SHIELD:
             can = (CanUse(RG_STICKS) || CanUse(RG_BIGGORON_SWORD)) && CanStandingShield();
             break;
@@ -1395,14 +1395,20 @@ bool Logic::CanRecoilHoverFromTorch(TorchRecoilRequirements req) {
 
 bool Logic::Water3FCentralToHighEmblem() {
     //"Just jumping" to this ledge is complicated, as the nearest part of the ledge is janky
-    //Adult without bunny hood can airdrift left to get a clean ledge grab, however if the scarecrow has spawned (which is a perm flag that with skip scarecrow inevitably activates while setting water to high) the usable ledge area is much smaller
-    //Unless most jumps like this, Bunny hood does solve the jump, at least for adult. For child it makes this not only possible but much less prone to issues than either adult jump.
-    //Adult can instead aim even fuirther left to get a good ledge climb, but will almost always be blocked by the scarecrow if that exists. otherwise adult with bunny will result in worse ledge bugging than not using bunny
-    //You can climb up even if you start doing wierd ledge things with a well timed jumpslash
-    //Hovers are similarly unintuitive, needing the player aim for the far side of the ledge, but the scarecrow is less annoying as even if you get pushed off, hovers will save you and push you slightly right, eventually giving you a good ledge grab
+    // Adult without bunny hood can airdrift left to get a clean ledge grab, however if the scarecrow has spawned (which
+    // is a perm flag that with skip scarecrow inevitably activates while setting water to high) the usable ledge area
+    // is much smaller Unless most jumps like this, Bunny hood does solve the jump, at least for adult. For child it
+    // makes this not only possible but much less prone to issues than either adult jump. Adult can instead aim even
+    // fuirther left to get a good ledge climb, but will almost always be blocked by the scarecrow if that exists.
+    // otherwise adult with bunny will result in worse ledge bugging than not using bunny You can climb up even if you
+    // start doing wierd ledge things with a well timed jumpslash Hovers are similarly unintuitive, needing the player
+    // aim for the far side of the ledge, but the scarecrow is less annoying as even if you get pushed off, hovers will
+    // save you and push you slightly right, eventually giving you a good ledge grab
     return (IsAdult && (CanUse(RG_HOVER_BOOTS) ||
                         (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && CanUse(RG_BOMB_BAG) && TakeDamage()))) ||
-           CanMiddairGroundJump() || (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT) || (logic->IsChild && logic->BunnyHood() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)));
+           CanMiddairGroundJump() ||
+           (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT) ||
+            (logic->IsChild && logic->BunnyHood() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)));
 }
 
 bool Logic::WaterRisingTargetTo3FCentral() {
@@ -2992,7 +2998,8 @@ bool Logic::SpiritExplosiveKeyLogic() {
 }
 
 bool Logic::SpiritWestToSkull() {
-    return (IsAdult && (ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP) || logic->BunnyHood())) || CanUse(RG_HOVER_BOOTS) || ReachScarecrow();
+    return (IsAdult && (ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP) || logic->BunnyHood())) || CanUse(RG_HOVER_BOOTS) ||
+           ReachScarecrow();
 }
 
 bool Logic::SpiritSunBlockSouthLedge() {
@@ -3011,11 +3018,13 @@ bool Logic::SpiritEastToSwitch() {
 
 // Combines crossing the ledge directly and the jump from the hand
 bool Logic::MQSpiritWestToPots() {
-    return (IsAdult && (ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP) || logic->BunnyHood())) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_SONG_OF_TIME);
+    return (IsAdult && (ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP) || logic->BunnyHood())) || CanUse(RG_HOVER_BOOTS) ||
+           CanUse(RG_SONG_OF_TIME);
 }
 
 bool Logic::MQSpiritStatueToSunBlock() {
-    return (IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || CanUse(RG_SONG_OF_TIME) || CanUse(RG_HOVER_BOOTS) || BunnyHood()) &&
+    return (IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || CanUse(RG_SONG_OF_TIME) ||
+            CanUse(RG_HOVER_BOOTS) || BunnyHood()) &&
            HasItem(RG_POWER_BRACELET);
 }
 
